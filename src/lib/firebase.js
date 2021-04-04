@@ -6,13 +6,12 @@ import 'firebase/firestore';
 // Initalize Firebase.
 // These details will need to be replaced with the project specific env vars at the start of each new cohort.
 var firebaseConfig = {
-  apiKey: { TCL_X_API_KEY },
-  authDomain: { TCL_X_AUTH_DOMAIN },
-  databaseURL: { TCL_X_DATABASE_URL },
-  projectId: { TCL_X_PROJECT_ID },
-  storageBucket: { TCL_X_STORAGE_BUCKET },
-  messagingSenderId: { TCL_X_SENDER_ID },
-  appId: { TCL_X_APP_ID },
+  apiKey: 'AIzaSyBKVPNdTIU3nUHBumdD26jfsWh7t8En0eQ',
+  authDomain: 'jono-smart-shopping-list.firebaseapp.com',
+  projectId: 'jono-smart-shopping-list',
+  storageBucket: 'jono-smart-shopping-list.appspot.com',
+  messagingSenderId: '402363546313',
+  appId: '1:402363546313:web:0e967bd2e6bb7070596b18',
 };
 
 let fb = firebase.initializeApp(firebaseConfig);
