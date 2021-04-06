@@ -1,24 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import { db } from './lib/firebase.js';
 import './App.css';
 
 function App() {
+  const [shoppingLists, setShoppingLists] = useState([]);
+
+  useEffect(() => {
+    db.collection('shoppingLists')
+      .get()
+      .then((querySnapshot) => {
+        let lists = [];
+        querySnapshot.forEach((doc) => {
+          lists.push(`${doc.id} => ${doc.data().items}`);
+          console.log(doc.id, ' => ', doc.data());
+        });
+        setShoppingLists(lists);
+      });
+  }, []); // The empty array makes sure that we only call set State once.
+
+  const addShoppingList = () => {
+    db.collection('shoppingLists').add({
+      items: ['beer', 'coffee', 'milk'],
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Smart Shopping list!</h1>
+      <h2>Item list</h2>
+      <ul>
+        {shoppingLists.map((value, index) => {
+          return <li key={index}>{value}</li>;
+        })}
+      </ul>
+      <button onClick={addShoppingList}>Add a shopping list item!</button>
     </div>
   );
 }
