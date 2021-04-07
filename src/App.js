@@ -31,13 +31,14 @@ function App() {
           <Route path="/add-item">
             <ShoppingListForm />
           </Route>
+          <Route path="/">
+            {token ? (
+              <Redirect to="/list" />
+            ) : (
+              <button onClick={generateToken}>Create New List</button>
+            )}
+          </Route>
         </Switch>
-
-        {token ? (
-          <Redirect to="/list" />
-        ) : (
-          <button onClick={generateToken}>Create New List</button>
-        )}
 
         <Nav />
       </Router>
