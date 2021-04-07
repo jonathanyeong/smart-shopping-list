@@ -12,6 +12,7 @@ function ShoppingList() {
 
   return (
     <div>
+      <h1>Shopping List</h1>
       {error && <strong>Error: {JSON.stringify(error)}</strong>}
       {loading && <span>Collection: Loading...</span>}
       {value && (

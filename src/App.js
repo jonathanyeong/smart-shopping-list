@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink,
+} from 'react-router-dom';
 import ShoppingList from './ShoppingList.js';
 import ShoppingListForm from './ShoppingListForm.js';
 import './App.css';
@@ -6,10 +12,40 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <h1>Smart Shopping list!</h1>
-      <h2>Item list</h2>
-      <ShoppingList />
-      <ShoppingListForm />
+      <Router>
+        <Switch>
+          <Route path="/list">
+            <ShoppingList />
+          </Route>
+          <Route path="/add-item">
+            <ShoppingListForm />
+          </Route>
+          <Route path="/">
+            <ShoppingList />
+          </Route>
+        </Switch>
+
+        <nav>
+          <ul>
+            <li>
+              <NavLink
+                to="/list"
+                activeStyle={{ fontWeight: 'bold' }}
+                isActive={(match, { pathname }) =>
+                  ['/', '/list'].includes(pathname)
+                }
+              >
+                List
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/add-item" activeStyle={{ fontWeight: 'bold' }}>
+                Add Item
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+      </Router>
     </div>
   );
 }
