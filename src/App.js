@@ -3,15 +3,26 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  NavLink,
+  Redirect,
 } from 'react-router-dom';
+import getToken from './lib/tokens.js';
+import { useStateWithLocalStorage } from './lib/hooks.js';
+import Nav from './Nav.js';
 import ShoppingList from './ShoppingList.js';
 import ShoppingListForm from './ShoppingListForm.js';
 import './App.css';
 
 function App() {
+  const [token, setToken] = useStateWithLocalStorage('userToken');
+
+  const generateToken = () => {
+    setToken(getToken());
+  };
+
   return (
     <div className="App">
+      <h1>Smart Shopping List</h1>
+
       <Router>
         <Switch>
           <Route path="/list">
@@ -20,31 +31,15 @@ function App() {
           <Route path="/add-item">
             <ShoppingListForm />
           </Route>
-          <Route path="/">
-            <ShoppingList />
-          </Route>
         </Switch>
 
-        <nav>
-          <ul>
-            <li>
-              <NavLink
-                to="/list"
-                activeStyle={{ fontWeight: 'bold' }}
-                isActive={(match, { pathname }) =>
-                  ['/', '/list'].includes(pathname)
-                }
-              >
-                List
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/add-item" activeStyle={{ fontWeight: 'bold' }}>
-                Add Item
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
+        {token ? (
+          <Redirect to="/list" />
+        ) : (
+          <button onClick={generateToken}>Create New List</button>
+        )}
+
+        <Nav />
       </Router>
     </div>
   );
