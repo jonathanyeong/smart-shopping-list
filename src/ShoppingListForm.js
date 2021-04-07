@@ -9,6 +9,7 @@ function ShoppingListForm() {
     db.collection('shoppingLists').add({
       items: [item],
     });
+    setItem('');
     event.preventDefault();
   };
 
