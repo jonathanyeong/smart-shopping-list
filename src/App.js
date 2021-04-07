@@ -1,17 +1,20 @@
-import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink,
-} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Nav from './Nav.js';
 import ShoppingList from './ShoppingList.js';
 import ShoppingListForm from './ShoppingListForm.js';
 import './App.css';
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem('userToken') || '');
+
+  useEffect(() => {
+    localStorage.setItem('userToken', token);
+  }, [token]);
+
   return (
     <div className="App">
+      <h1>Smart Shopping List</h1>
       <Router>
         <Switch>
           <Route path="/list">
@@ -20,31 +23,9 @@ function App() {
           <Route path="/add-item">
             <ShoppingListForm />
           </Route>
-          <Route path="/">
-            <ShoppingList />
-          </Route>
         </Switch>
 
-        <nav>
-          <ul>
-            <li>
-              <NavLink
-                to="/list"
-                activeStyle={{ fontWeight: 'bold' }}
-                isActive={(match, { pathname }) =>
-                  ['/', '/list'].includes(pathname)
-                }
-              >
-                List
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/add-item" activeStyle={{ fontWeight: 'bold' }}>
-                Add Item
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
+        <Nav />
       </Router>
     </div>
   );
