@@ -15,7 +15,7 @@ function ShoppingListForm() {
 
   return (
     <div class="shopping-list__form-container">
-      <h2>Add Item</h2>
+      <h1>Add Item</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Item To Add:
