@@ -1,6 +1,11 @@
 .App {
   text-align: center;
 }
+nav {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
 
 nav ul {
   list-style: none;
