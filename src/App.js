@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,14 +6,17 @@ import {
   Redirect,
 } from 'react-router-dom';
 import getToken from './lib/tokens.js';
-import { useStateWithLocalStorage } from './lib/hooks.js';
 import Nav from './Nav.js';
 import ShoppingList from './ShoppingList.js';
 import ShoppingListForm from './ShoppingListForm.js';
 import './App.css';
 
 function App() {
-  const [token, setToken] = useStateWithLocalStorage('userToken');
+  const [token, setToken] = useState(localStorage.getItem('userToken') || '');
+
+  useEffect(() => {
+    localStorage.setItem('userToken', token);
+  }, [token]);
 
   const generateToken = () => {
     setToken(getToken());
@@ -31,13 +34,14 @@ function App() {
           <Route path="/add-item">
             <ShoppingListForm />
           </Route>
+          <Route path="/">
+            {token ? (
+              <Redirect to="/list" />
+            ) : (
+              <button onClick={generateToken}>Create New List</button>
+            )}
+          </Route>
         </Switch>
-
-        {token ? (
-          <Redirect to="/list" />
-        ) : (
-          <button onClick={generateToken}>Create New List</button>
-        )}
 
         <Nav />
       </Router>

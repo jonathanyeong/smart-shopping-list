@@ -3,27 +3,21 @@ import { db } from './lib/firebase.js';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
 function ShoppingList() {
-  const [value, loading, error] = useCollection(
-    db.collection('shoppingLists'),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    },
-  );
+  const [value, loading, error] = useCollection(db.collection('items'), {
+    snapshotListenOptions: { includeMetadataChanges: true },
+  });
 
   return (
     <div>
-      <h2>List</h2>
+      <h2>Items</h2>
       {error && <strong>Error: {JSON.stringify(error)}</strong>}
-      {loading && <span>Collection: Loading...</span>}
+      {loading && <span>Loading Items...</span>}
       {value && (
-        <span>
-          Collection:{' '}
+        <ul>
           {value.docs.map((doc) => (
-            <React.Fragment key={doc.id}>
-              {JSON.stringify(doc.data())},{' '}
-            </React.Fragment>
+            <li key={doc.id}>{doc.data().name}</li>
           ))}
-        </span>
+        </ul>
       )}
     </div>
   );
