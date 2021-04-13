@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { db } from './lib/firebase.js';
 import './ShoppingListForm.css';
 
 function ShoppingListForm() {
+  const SOON = 7;
+  const KIND_OF_SOON = 14;
+  const NOT_SOON = 30;
+  const token = localStorage.getItem('userToken');
+
   const [item, setItem] = useState('');
-  const [buyTime, setBuyTime] = useState(7);
+  const [buyTime, setBuyTime] = useState(SOON);
   const [lastPurchased, setLastPurchased] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('userToken') || '');
 
   const handleSubmit = (event) => {
     db.collection('items').add({
@@ -36,19 +39,39 @@ function ShoppingListForm() {
           />
         </label>
 
-        <label>
-          How soon are you likely to buy it again?
-          <select
-            value={buyTime.toString()}
-            onBlur={(e) => {
-              setBuyTime(parseInt(e.target.value));
-            }}
-          >
-            <option value="7">Soon</option>
-            <option value="14">Kind of soon</option>
-            <option value="30">Not Soon</option>
-          </select>
-        </label>
+        <fieldset>
+          <p>How soon are you likely to buy it again?</p>
+          <label>
+            Soon
+            <input
+              type="radio"
+              name="buyTiming"
+              onChange={() => {
+                setBuyTime(SOON);
+              }}
+            />
+          </label>
+          <label>
+            Kind of Soon
+            <input
+              type="radio"
+              name="buyTiming"
+              onChange={() => {
+                setBuyTime(KIND_OF_SOON);
+              }}
+            />
+          </label>
+          <label>
+            Not Soon
+            <input
+              type="radio"
+              name="buyTiming"
+              onChange={() => {
+                setBuyTime(NOT_SOON);
+              }}
+            />
+          </label>
+        </fieldset>
 
         <label>
           Last purchased date (Optional)
