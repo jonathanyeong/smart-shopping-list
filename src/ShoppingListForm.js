@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { db } from './lib/firebase.js';
+import { validItem } from './lib/helpers/item_validator.js';
 import './ShoppingListForm.css';
 
 function ShoppingListForm() {
@@ -13,14 +14,20 @@ function ShoppingListForm() {
   const [lastPurchased, setLastPurchased] = useState(null);
 
   const handleSubmit = (event) => {
-    db.collection('items').add({
-      name: item,
-      buyTime: buyTime,
-      lastPurchased: lastPurchased,
-      token: token,
-    });
-    setItem('');
     event.preventDefault();
+
+    if (validItem(item)) {
+      db.collection('items').add({
+        name: item,
+        buyTime: buyTime,
+        lastPurchased: lastPurchased,
+        token: token,
+      });
+      setItem('');
+      setBuyTime(SOON);
+    } else {
+      alert('Invalid Item');
+    }
   };
 
   return (
@@ -46,6 +53,7 @@ function ShoppingListForm() {
             <input
               type="radio"
               name="buyTiming"
+              checked={buyTime === SOON}
               onChange={() => {
                 setBuyTime(SOON);
               }}
@@ -56,6 +64,7 @@ function ShoppingListForm() {
             <input
               type="radio"
               name="buyTiming"
+              checked={buyTime === KIND_OF_SOON}
               onChange={() => {
                 setBuyTime(KIND_OF_SOON);
               }}
@@ -66,6 +75,7 @@ function ShoppingListForm() {
             <input
               type="radio"
               name="buyTiming"
+              checked={buyTime === NOT_SOON}
               onChange={() => {
                 setBuyTime(NOT_SOON);
               }}
