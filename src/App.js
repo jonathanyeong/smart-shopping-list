@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,11 +16,13 @@ function App() {
   const TOKEN_WORD_LENGTH = 3;
   const [token, setToken] = useState(localStorage.getItem('userToken') || '');
   const [joinToken, setJoinToken] = useState('');
-
+  const didSetToken = useRef(false);
   useEffect(() => {
     localStorage.setItem('userToken', token);
-    if (token.length > 0) {
+
+    if (token.length > 0 && !didSetToken.current) {
       db.collection('tokens').doc(token).set({ token: token });
+      didSetToken.current = true;
     }
   }, [token]);
 
