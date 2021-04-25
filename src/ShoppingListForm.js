@@ -1,22 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { db } from './lib/firebase.js';
-import { validItem } from './lib/helpers/item_validator.js';
+import { validItem, normalizedItem } from './lib/helpers/item_helpers.js';
+import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 import './ShoppingListForm.css';
 
-function ShoppingListForm() {
+function ShoppingListForm({ token }) {
   const SOON = 7;
   const KIND_OF_SOON = 14;
   const NOT_SOON = 30;
-  const token = localStorage.getItem('userToken');
-
   const [item, setItem] = useState('');
   const [errors, setErrors] = useState({});
   const [buyTime, setBuyTime] = useState(SOON);
   const [lastPurchased, setLastPurchased] = useState(null);
   const didInitialMountRef = useRef(true);
 
+  const [items] = useCollectionDataOnce(
+    db.collection('items').where('token', '==', token),
+  );
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const matchedItems = items.filter((addedItem) => {
+      return addedItem.name === normalizedItem(item);
+    });
+
+    if (matchedItems.length > 0) {
+      alert('Item has already been added!');
+      return;
+    }
 
     if (validItem(item)) {
       db.collection('items').add({
