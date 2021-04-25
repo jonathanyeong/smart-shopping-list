@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { db } from './lib/firebase.js';
 import { validItem } from './lib/helpers/item_validator.js';
 import './ShoppingListForm.css';
@@ -10,8 +10,10 @@ function ShoppingListForm() {
   const token = localStorage.getItem('userToken');
 
   const [item, setItem] = useState('');
+  const [errors, setErrors] = useState({});
   const [buyTime, setBuyTime] = useState(SOON);
   const [lastPurchased, setLastPurchased] = useState(null);
+  const firstRender = useRef(true);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,25 +27,38 @@ function ShoppingListForm() {
       });
       setItem('');
       setBuyTime(SOON);
-    } else {
-      alert('Invalid Item');
     }
   };
 
+  useEffect(() => {
+    let errs = {};
+
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    if (!validItem(item)) {
+      errs = { item: 'invalid item' };
+    }
+    setErrors(errs);
+  }, [item]);
+
   return (
-    <div class="shopping-list__form-container">
+    <div className="shopping-list__form-container">
       <h2>Add Item</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Item Name
           <input
             type="text"
+            className={errors.item ? 'error' : ''}
             value={item}
-            onChange={(e) => {
-              setItem(e.target.value);
-            }}
+            onChange={(e) => setItem(e.target.value)}
             required
           />
+          <br />
+          <span class="shopping-list__input-errors">{errors.item}</span>
         </label>
 
         <fieldset>
