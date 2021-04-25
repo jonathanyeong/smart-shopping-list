@@ -4,14 +4,14 @@ import './Nav.css';
 
 function Nav() {
   return (
-    <nav class="navigation-container">
-      <ul class="navigation-items">
-        <li class="navigation-item">
+    <nav className="navigation-container">
+      <ul className="navigation-items">
+        <li className="navigation-item">
           <NavLink to="/list" activeStyle={{ fontWeight: 'bold' }}>
             List
           </NavLink>
         </li>
-        <li class="navigation-item">
+        <li className="navigation-item">
           <NavLink to="/add-item" activeStyle={{ fontWeight: 'bold' }}>
             Add Item
           </NavLink>

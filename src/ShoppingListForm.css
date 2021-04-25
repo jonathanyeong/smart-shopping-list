@@ -14,3 +14,17 @@
 .shopping-list__form-container select {
   margin-left: 5px;
 }
+
+.shopping-list__form-container .error {
+  border-color: red;
+}
+
+.shopping-list__form-container .error:focus-visible,
+.shopping-list__form-container .error:focus {
+  border-color: red;
+}
+
+.shopping-list__input-errors {
+  font-weight: bold;
+  color: red;
+}
