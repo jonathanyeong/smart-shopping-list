@@ -20,9 +20,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem('userToken', token);
     if (token.length > 0) {
-      db.collection('tokens').add({
-        token: token,
-      });
+      db.collection('tokens').doc(token).set({ token: token });
     }
   }, [token]);
 
