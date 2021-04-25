@@ -13,6 +13,7 @@ import ShoppingListForm from './ShoppingListForm.js';
 import './App.css';
 
 function App() {
+  const TOKEN_WORD_LENGTH = 3;
   const [token, setToken] = useState(localStorage.getItem('userToken') || '');
   const [joinToken, setJoinToken] = useState('');
 
@@ -31,7 +32,7 @@ function App() {
 
   const handleJoinList = (event) => {
     event.preventDefault();
-    if (joinToken.trim().split(' ').length == 3) {
+    if (joinToken.trim().split(' ').length == TOKEN_WORD_LENGTH) {
       db.collection('tokens')
         .where('token', '==', joinToken)
         .get()
