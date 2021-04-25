@@ -31,16 +31,20 @@ function App() {
 
   const handleJoinList = (event) => {
     event.preventDefault();
-    db.collection('tokens')
-      .where('token', '==', joinToken)
-      .get()
-      .then((querySnapshot) => {
-        if (!querySnapshot.empty) {
-          setToken(joinToken);
-        } else {
-          alert("Token doesn't exist!");
-        }
-      });
+    if (joinToken.trim().split(' ').length == 3) {
+      db.collection('tokens')
+        .where('token', '==', joinToken)
+        .get()
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            setToken(joinToken);
+          } else {
+            alert("Token doesn't exist!");
+          }
+        });
+    } else {
+      alert('Invalid token');
+    }
   };
 
   return (
