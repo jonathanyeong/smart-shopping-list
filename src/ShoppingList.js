@@ -1,9 +1,9 @@
 import React from 'react';
 import { db } from './lib/firebase.js';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 function ShoppingList({ token }) {
-  const [value, loading, error] = useCollection(
+  const [value, loading, error] = useCollectionData(
     db.collection('items').where('token', '==', token),
     {
       snapshotListenOptions: { includeMetadataChanges: true },
@@ -17,8 +17,8 @@ function ShoppingList({ token }) {
       {loading && <span>Loading Items...</span>}
       {value && (
         <ul>
-          {value.docs.map((doc) => (
-            <li key={doc.id}>{doc.data().name}</li>
+          {value.map((doc, index) => (
+            <li key={index}>{doc.name}</li>
           ))}
         </ul>
       )}

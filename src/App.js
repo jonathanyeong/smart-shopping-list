@@ -32,7 +32,7 @@ function App() {
 
   const handleJoinList = (event) => {
     event.preventDefault();
-    if (joinToken.trim().split(' ').length == TOKEN_WORD_LENGTH) {
+    if (joinToken.trim().split(' ').length === TOKEN_WORD_LENGTH) {
       db.collection('tokens')
         .where('token', '==', joinToken)
         .get()
