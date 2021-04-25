@@ -5,6 +5,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { db } from './lib/firebase.js';
 import getToken from './lib/tokens.js';
 import Nav from './Nav.js';
 import ShoppingList from './ShoppingList.js';
@@ -13,13 +14,33 @@ import './App.css';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('userToken') || '');
+  const [joinToken, setJoinToken] = useState('');
 
   useEffect(() => {
     localStorage.setItem('userToken', token);
+    if (token.length > 0) {
+      db.collection('tokens').add({
+        token: token,
+      });
+    }
   }, [token]);
 
   const generateToken = () => {
     setToken(getToken());
+  };
+
+  const handleJoinList = (event) => {
+    event.preventDefault();
+    db.collection('tokens')
+      .where('token', '==', joinToken)
+      .get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          setToken(joinToken);
+        } else {
+          alert("Token doesn't exist!");
+        }
+      });
   };
 
   return (
@@ -40,6 +61,18 @@ function App() {
             ) : (
               <button onClick={generateToken}>Create New List</button>
             )}
+            <p>Join an existing list by entering a three word token.</p>
+            <form onSubmit={handleJoinList}>
+              <label>
+                Join List
+                <input
+                  type="text"
+                  value={joinToken}
+                  onChange={(e) => setJoinToken(e.target.value)}
+                />
+              </label>
+              <input type="submit" value="Join existing list" />
+            </form>
           </Route>
         </Switch>
 
