@@ -38,6 +38,8 @@ function App() {
         .get()
         .then((querySnapshot) => {
           if (!querySnapshot.empty) {
+            // Token already exists in the DB we don't need to add it again.
+            didSetToken.current = true;
             setToken(joinToken);
           } else {
             alert("Token doesn't exist!");
