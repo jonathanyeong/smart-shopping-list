@@ -57,10 +57,10 @@ function App() {
       <Router>
         <Switch>
           <Route path="/list">
-            {token ? <ShoppingList /> : <Redirect to="/" />}
+            {token ? <ShoppingList token={token} /> : <Redirect to="/" />}
           </Route>
           <Route path="/add-item">
-            {token ? <ShoppingListForm /> : <Redirect to="/" />}
+            {token ? <ShoppingListForm token={token} /> : <Redirect to="/" />}
           </Route>
           <Route path="/">
             {token ? (

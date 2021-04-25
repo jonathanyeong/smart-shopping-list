@@ -3,12 +3,10 @@ import { db } from './lib/firebase.js';
 import { validItem } from './lib/helpers/item_validator.js';
 import './ShoppingListForm.css';
 
-function ShoppingListForm() {
+function ShoppingListForm({ token }) {
   const SOON = 7;
   const KIND_OF_SOON = 14;
   const NOT_SOON = 30;
-  const token = localStorage.getItem('userToken');
-
   const [item, setItem] = useState('');
   const [errors, setErrors] = useState({});
   const [buyTime, setBuyTime] = useState(SOON);

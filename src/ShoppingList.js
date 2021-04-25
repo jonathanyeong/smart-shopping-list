@@ -2,10 +2,13 @@ import React from 'react';
 import { db } from './lib/firebase.js';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
-function ShoppingList() {
-  const [value, loading, error] = useCollection(db.collection('items'), {
-    snapshotListenOptions: { includeMetadataChanges: true },
-  });
+function ShoppingList({ token }) {
+  const [value, loading, error] = useCollection(
+    db.collection('items').where('token', '==', token),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    },
+  );
 
   return (
     <div>
