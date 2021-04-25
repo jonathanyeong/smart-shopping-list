@@ -13,7 +13,7 @@ function ShoppingListForm() {
   const [errors, setErrors] = useState({});
   const [buyTime, setBuyTime] = useState(SOON);
   const [lastPurchased, setLastPurchased] = useState(null);
-  const firstRender = useRef(true);
+  const didInitialMountRef = useRef(true);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,14 +27,15 @@ function ShoppingListForm() {
       });
       setItem('');
       setBuyTime(SOON);
+      didInitialMountRef.current = true;
     }
   };
 
   useEffect(() => {
     let errs = {};
 
-    if (firstRender.current) {
-      firstRender.current = false;
+    if (didInitialMountRef.current) {
+      didInitialMountRef.current = false;
       return;
     }
 
